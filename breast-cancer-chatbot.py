@@ -90,13 +90,15 @@ query = st.text_input("Ask a question about breast cancer research:")
 if query:
     with st.spinner("Thinking..."):
         result = qa_chain.invoke({"query": query})
+
         st.markdown("### 💡 Answer:")
         st.write(result["result"])
 
-        st.markdown("### 📚 Sources:")
-        sources = set()
-        for doc in result["source_documents"]:
-            src = doc.metadata.get("source", "Unknown")
-            sources.add(src)
-        for i, src in enumerate(sources):
-            st.markdown(f"- `{src}`")
+        st.markdown("### 📚 Retrieved Contexts:")
+        for i, doc in enumerate(result["source_documents"]):
+            source = doc.metadata.get("source", "Unknown")
+            page = doc.metadata.get("page", "N/A")
+            content = doc.page_content.strip()
+
+            with st.expander(f"📄 Source {i+1}: `{source}` (page {page})"):
+                st.write(content)
