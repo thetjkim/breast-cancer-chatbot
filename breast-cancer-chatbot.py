@@ -95,7 +95,10 @@ st.title("🩺 Breast Cancer Research Chatbot")
 qa_chain = setup_chain()
 
 # Input box for user's question
-query = st.text_input("Ask a question about breast cancer research: (e.g., What are the recent advancements in mammography technologies for early breast cancer detection?)")
+query = st.text_input(
+    "Ask a question about breast cancer research:",
+    placeholder="e.g., What are the recent advancements in mammography technologies for early breast cancer detection?"
+)
 
 @st.cache_data(show_spinner="Summarizing retrieved chunks...")
 def summarize_text(text):
