@@ -17,9 +17,8 @@ assert OPENAI_API_KEY, "OPENAI_API_KEY not found in environment variables."
 # 2. Load and index the PDF document using FAISS vector store
 @st.cache_resource
 def load_vector_db():
-    # Load the PDF document
-    loader = PyMuPDFLoader("nih_breast_cancer.pdf")
-    documents = loader.load()
+    # Load PDF documents
+    documents = load_all_pdfs("pdfs") 
 
     # Split text into manageable chunks for embedding
     splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=200)
