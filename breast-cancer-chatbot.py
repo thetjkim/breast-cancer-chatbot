@@ -86,6 +86,12 @@ qa_chain = setup_chain()
 # Input box for user's question
 query = st.text_input("Ask a question about breast cancer research:")
 
+@st.cache_data(show_spinner="Summarizing retrieved chunks...")
+def summarize_text(text):
+    summarizer = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.3)
+    prompt = f"Summarize the following paragraph in 2-3 sentences:\n\n{text}"
+    return summarizer.invoke(prompt)
+
 # If user submits a query, process it using the QA chain
 if query:
     with st.spinner("Thinking..."):
@@ -95,10 +101,18 @@ if query:
         st.write(result["result"])
 
         st.markdown("### 📚 Retrieved Contexts:")
+
         for i, doc in enumerate(result["source_documents"]):
             source = doc.metadata.get("source", "Unknown")
             page = doc.metadata.get("page", "N/A")
             content = doc.page_content.strip()
-
+        
             with st.expander(f"📄 Source {i+1}: `{source}` (page {page})"):
-                st.write(content)
+                if len(content.split()) > 120:  # 문단이 너무 길면 요약
+                    summary = summarize_text(content)
+                    st.markdown("**📝 Summary:**")
+                    st.write(summary)
+                    with st.expander("🔍 Full Text"):
+                        st.write(content)
+                else:
+                    st.write(content)
