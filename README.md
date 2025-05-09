@@ -1,5 +1,7 @@
 # Breast Cancer Research Chatbot
 
+👉 [Try the chatbot live on Streamlit](https://breast-cancer-chatbot-kbngdjstp68zfz9kpjzuyp.streamlit.app)
+
 This is an experimental chatbot designed to assist in understanding academic literature on breast cancer.
 
 My name is TJ. After someone in my family was diagnosed with breast cancer, I started reading research papers to better understand the disease. During that process, I often wished for a way to retrieve and explore relevant findings more easily—something interactive, focused, and trustworthy. This project was born out of that wish.
