@@ -15,8 +15,6 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 assert OPENAI_API_KEY, "OPENAI_API_KEY not found in environment variables."
 
-
-
 # 2. Load and index the PDF documents using FAISS vector store
 def load_all_pdfs(directory="pdfs"):
     all_docs = []
