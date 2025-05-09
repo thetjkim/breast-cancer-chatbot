@@ -7,6 +7,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
 from langchain import hub
 from pathlib import Path
 
@@ -48,8 +49,6 @@ def setup_chain():
     # Load the RAG prompt template from LangChain Hub
     # prompt = hub.pull("rlm/rag-prompt")
 
-    from langchain.prompts import PromptTemplate
-
     prompt = PromptTemplate.from_template("""
     You are a highly knowledgeable research assistant with expertise in oncology, especially breast cancer.
     Use the context below to answer the question as thoroughly and informatively as possible.
@@ -75,7 +74,7 @@ def setup_chain():
         retriever=retriever,
         chain_type="stuff",
         chain_type_kwargs={"prompt": prompt},
-        return_source_documents=False
+        return_source_documents=True
     )
 
 # 4. Streamlit UI for the chatbot
@@ -93,3 +92,11 @@ if query:
         result = qa_chain.invoke({"query": query})
         st.markdown("### 💡 Answer:")
         st.write(result["result"])
+
+        st.markdown("### 📚 Sources:")
+        sources = set()
+        for doc in result["source_documents"]:
+            src = doc.metadata.get("source", "Unknown")
+            sources.add(src)
+        for i, src in enumerate(sources):
+            st.markdown(f"- `{src}`")
