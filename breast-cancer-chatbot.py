@@ -8,13 +8,24 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain import hub
+from pathlib import Path
 
 # 1. Load environment variables
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 assert OPENAI_API_KEY, "OPENAI_API_KEY not found in environment variables."
 
-# 2. Load and index the PDF document using FAISS vector store
+
+
+# 2. Load and index the PDF documents using FAISS vector store
+def load_all_pdfs(directory="pdfs"):
+    all_docs = []
+    for file in Path(directory).glob("*.pdf"):
+        loader = PyMuPDFLoader(str(file))
+        docs = loader.load()
+        all_docs.extend(docs)
+    return all_docs
+    
 @st.cache_resource
 def load_vector_db():
     # Load PDF documents
