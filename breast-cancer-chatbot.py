@@ -108,11 +108,11 @@ if query:
             content = doc.page_content.strip()
         
             with st.expander(f"📄 Source {i+1}: `{source}` (page {page})"):
-                if len(content.split()) > 120:  # 문단이 너무 길면 요약
+                if len(content.split()) > 120:
                     summary = summarize_text(content)
                     st.markdown("**📝 Summary:**")
                     st.write(summary)
-                    with st.expander("🔍 Full Text"):
-                        st.write(content)
+                    st.markdown("**🔍 Full Text:**")
+                    st.write(content)  # ⛔ 중첩 expander 제거
                 else:
                     st.write(content)
