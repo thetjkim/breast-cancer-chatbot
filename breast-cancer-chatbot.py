@@ -36,8 +36,26 @@ def setup_chain():
     db = load_vector_db()
     retriever = db.as_retriever()
 
-     # Load the RAG prompt template from LangChain Hub
-    prompt = hub.pull("rlm/rag-prompt")
+    # Load the RAG prompt template from LangChain Hub
+    # prompt = hub.pull("rlm/rag-prompt")
+
+    from langchain.prompts import PromptTemplate
+
+    prompt = PromptTemplate.from_template("""
+    You are a highly knowledgeable research assistant with expertise in oncology, especially breast cancer.
+    Use the context below to answer the question as thoroughly and informatively as possible.
+    
+    Even if the exact answer is not stated, make your best educated guess based on related context and your medical knowledge.
+    Avoid saying "The context does not mention" unless absolutely necessary.
+    
+    Context:
+    {context}
+    
+    Question:
+    {question}
+    
+    Answer:
+    """)
 
     # Initialize the OpenAI LLM (ChatGPT-4)
     llm = ChatOpenAI(model="gpt-4", temperature=0.1)
