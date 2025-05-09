@@ -111,8 +111,8 @@ if query:
                 if len(content.split()) > 120:
                     summary = summarize_text(content)
                     st.markdown("**📝 Summary:**")
-                    st.write(summary)
+                    st.write(summary.content)
                     st.markdown("**🔍 Full Text:**")
-                    st.write(content)  # ⛔ 중첩 expander 제거
+                    st.write(content) 
                 else:
                     st.write(content)
