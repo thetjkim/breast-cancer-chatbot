@@ -5,3 +5,4 @@ langchain-openai
 langchain-community
 langchain-chroma
 pymupdf
+protobuf==4.25.3
